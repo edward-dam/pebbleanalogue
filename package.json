@@ -1,0 +1,27 @@
+{
+    "author": "Edward Dam",
+    "dependencies": {},
+    "keywords": [],
+    "name": "anadam-v1.0",
+    "pebble": {
+        "capabilities": [
+            "location"
+        ],
+        "displayName": "AnaDam v1.0",
+        "enableMultiJS": true,
+        "messageKeys": [],
+        "projectType": "rocky",
+        "resources": {
+            "media": []
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "basalt"
+        ],
+        "uuid": "0d473ae9-5fae-44a4-8728-148858d3ac28",
+        "watchapp": {
+            "watchface": true
+        }
+    },
+    "version": "1.0.0"
+}
