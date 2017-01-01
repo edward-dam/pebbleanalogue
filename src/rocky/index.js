@@ -82,15 +82,15 @@ rocky.on('draw', function(event) {
   drawText(ctx, date, 'gray', 'center', '14px bold Gothic', width - 33, cy - 5);
 
   // Define Max Length of Hands
-  var maxLength = (Math.min(width, height) - 20) / 2;
+  var maxLength = (Math.min(width, height) - 15) / 2;
 
   // Draw Minute Hand
   var minuteFraction = (new Date().getMinutes()) / 60;
   var minuteAngle    = fractionToRadian(minuteFraction);
-  drawHand(ctx, cx, cy, minuteAngle, maxLength, 'white', 6);
+  drawHand(ctx, cx, cy, minuteAngle, maxLength, 'white', 7);
 
   // Draw Hour Hand
   var hourFraction = (new Date().getHours() % 12 + minuteFraction) / 12;
   var hourAngle    = fractionToRadian(hourFraction);
-  drawHand(ctx, cx, cy, hourAngle, maxLength * 0.6, 'white', 6);
+  drawHand(ctx, cx, cy, hourAngle, maxLength * 0.5, 'gray', 7);
 });
