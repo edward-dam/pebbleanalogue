@@ -53,7 +53,7 @@ rocky.on('draw', function(event) {
   var cy = height / 2;
 
   // Draw Brand
-  drawText(ctx, 'pebble', 'gray', 'center', '18px bold Gothic', cx, cy + 25);
+  //drawText(ctx, 'pebble', 'gray', 'center', '18px bold Gothic', cx, cy + 25);
 
   // Draw Numbers
   drawText(ctx, '1',  'white', 'center', '28px bold Droid-serif', cx + 40, - 6);
@@ -70,8 +70,8 @@ rocky.on('draw', function(event) {
   drawText(ctx, '12', 'white', 'center', '28px bold Droid-serif', cx,      - 6);
 
   // Draw Name
-  drawText(ctx, 'Ed',  'gray',  'center', '14px bold Gothic', 35, cy - 15);
-  drawText(ctx, 'Dam', 'gray',  'center', '14px bold Gothic', 35, cy - 5);
+  //drawText(ctx, 'Ed',  'gray',  'center', '14px bold Gothic', 35, cy - 15);
+  //drawText(ctx, 'Dam', 'gray',  'center', '14px bold Gothic', 35, cy - 5);
 
   // Draw Day
   var day = new Date().toLocaleDateString(undefined, {day: 'short'});
@@ -92,5 +92,5 @@ rocky.on('draw', function(event) {
   // Draw Hour Hand
   var hourFraction = (new Date().getHours() % 12 + minuteFraction) / 12;
   var hourAngle    = fractionToRadian(hourFraction);
-  drawHand(ctx, cx, cy, hourAngle, maxLength * 0.5, 'gray', 7);
+  drawHand(ctx, cx, cy, hourAngle, maxLength * 0.6, 'gray', 7);
 });
