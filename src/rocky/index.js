@@ -47,16 +47,14 @@ rocky.on('draw', function(event) {
   // Define Screen Size
   var width  = ctx.canvas.unobstructedWidth;
   var height = ctx.canvas.unobstructedHeight;
-  
+
   // Define Centre of Screen
   var cx = width  / 2;
   var cy = height / 2;
-  
-  // Draw Fixed Text
-  drawText(ctx, 'pebble', 'white', 'center', '24px bold Gothic', cx, cy - 55);
-  drawText(ctx, 'Ed',     'gray',  'center', '14px bold Gothic', 35, cy - 15);
-  drawText(ctx, 'Dam',    'gray',  'center', '14px bold Gothic', 35, cy - 5);
-  
+
+  // Draw Brand
+  drawText(ctx, 'pebble', 'gray', 'center', '18px bold Gothic', cx, cy + 25);
+
   // Draw Numbers
   drawText(ctx, '1',  'white', 'center', '28px bold Droid-serif', cx + 40, - 6);
   drawText(ctx, '2',  'white', 'right',  '28px bold Droid-serif', width,   cy     - 55);
@@ -70,15 +68,19 @@ rocky.on('draw', function(event) {
   drawText(ctx, '10', 'white', 'left',   '28px bold Droid-serif', 0,       cy     - 55);
   drawText(ctx, '11', 'white', 'center', '28px bold Droid-serif', cx - 40, - 6);
   drawText(ctx, '12', 'white', 'center', '28px bold Droid-serif', cx,      - 6);
-  
+
+  // Draw Name
+  drawText(ctx, 'Ed',  'gray',  'center', '14px bold Gothic', 35, cy - 15);
+  drawText(ctx, 'Dam', 'gray',  'center', '14px bold Gothic', 35, cy - 5);
+
   // Draw Day
   var day = new Date().toLocaleDateString(undefined, {day: 'short'});
   drawText(ctx, day, 'gray', 'center', '14px bold Gothic', width - 33, cy - 15);
-  
+
   // Draw Date
   var date   = new Date().toLocaleDateString(undefined, {day:   '2-digit'});
   drawText(ctx, date, 'gray', 'center', '14px bold Gothic', width - 33, cy - 5);
-  
+
   // Define Max Length of Hands
   var maxLength = (Math.min(width, height) - 20) / 2;
 
