@@ -79,7 +79,7 @@ rocky.on('draw', function(event) {
 
   // Draw Date
   var date   = new Date().toLocaleDateString(undefined, {day:   '2-digit'});
-  drawText(ctx, date, 'gray', 'center', '14px bold Gothic', width - 33, cy - 5);
+  drawText(ctx, date, 'gray', 'center', '14px bold Gothic', width - 33, cy - 4);
 
   // Define Max Length of Hands
   var maxLength = (Math.min(width, height) - 15) / 2;
