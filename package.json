@@ -2,12 +2,12 @@
     "author": "Edward Dam",
     "dependencies": {},
     "keywords": [],
-    "name": "anadam-v1.0",
+    "name": "analogue-v1.0",
     "pebble": {
         "capabilities": [
             "location"
         ],
-        "displayName": "AnaDam v1.0",
+        "displayName": "Analogue v1.0",
         "enableMultiJS": true,
         "messageKeys": [],
         "projectType": "rocky",

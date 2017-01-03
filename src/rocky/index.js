@@ -79,7 +79,7 @@ rocky.on('draw', function(event) {
 
   // Draw Date
   var date   = new Date().toLocaleDateString(undefined, {day:   '2-digit'});
-  drawText(ctx, date, 'gray', 'center', '14px bold Gothic', width - 33, cy - 4);
+  drawText(ctx, date, 'gray', 'center', '14px bold Gothic', width - 33, cy - 3);
 
   // Define Max Length of Hands
   var maxLength = (Math.min(width, height) - 15) / 2;
@@ -93,4 +93,7 @@ rocky.on('draw', function(event) {
   var hourFraction = (new Date().getHours() % 12 + minuteFraction) / 12;
   var hourAngle    = fractionToRadian(hourFraction);
   drawHand(ctx, cx, cy, hourAngle, maxLength * 0.6, 'gray', 7);
+  
+  // Draw Centre Dot
+  drawHand(ctx, cx, cy, 0, 0, 'white', 13);
 });
