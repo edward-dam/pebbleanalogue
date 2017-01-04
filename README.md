@@ -1,4 +1,4 @@
 # pebbleanalogue
-analogue v1.1
+analogue v1.2
 
 ![pebbleanalogue.png](http://www.edwarddam.com/images/pebbleanalogue.png)
