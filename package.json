@@ -2,12 +2,12 @@
     "author": "Edward Dam",
     "dependencies": {},
     "keywords": [],
-    "name": "analogue-v1.1",
+    "name": "analogue-v1.2",
     "pebble": {
         "capabilities": [
             "location"
         ],
-        "displayName": "Analogue v1.1",
+        "displayName": "Analogue v1.2",
         "enableMultiJS": true,
         "messageKeys": [],
         "projectType": "rocky",
@@ -23,5 +23,5 @@
             "watchface": true
         }
     },
-    "version": "1.1.0"
+    "version": "1.2.0"
 }

@@ -53,17 +53,17 @@ rocky.on('draw', function(event) {
   var cy = height / 2;
   
   // Draw Numbers
-  drawText(ctx, 'a',  'gray',  'center', '28px bold Droid-serif', cx + 40, - 6);
-  drawText(ctx, 'n',  'gray',  'right',  '28px bold Droid-serif', width,   cy     - 55);
+  drawText(ctx, '1',  'gray',  'center', '28px bold Droid-serif', cx + 40, - 6);
+  drawText(ctx, '2',  'gray',  'right',  '28px bold Droid-serif', width,   cy     - 55);
   drawText(ctx, '3',  'white', 'right',  '28px bold Droid-serif', width,   cy     - 18);
-  drawText(ctx, 'a',  'gray',  'right',  '28px bold Droid-serif', width,   cy     + 20);
-  drawText(ctx, 'l',  'gray',  'center', '28px bold Droid-serif', cx + 40, height - 30);
+  drawText(ctx, '4',  'gray',  'right',  '28px bold Droid-serif', width,   cy     + 20);
+  drawText(ctx, '5',  'gray',  'center', '28px bold Droid-serif', cx + 40, height - 30);
   drawText(ctx, '6',  'white', 'center', '28px bold Droid-serif', cx,      height - 30);
-  drawText(ctx, 'o',  'gray',  'center', '28px bold Droid-serif', cx - 40, height - 30);
-  drawText(ctx, 'g',  'gray',  'left',   '28px bold Droid-serif', 0,       cy     + 20);
+  drawText(ctx, '7',  'gray',  'center', '28px bold Droid-serif', cx - 40, height - 30);
+  drawText(ctx, '8',  'gray',  'left',   '28px bold Droid-serif', 0,       cy     + 20);
   drawText(ctx, '9',  'white', 'left',   '28px bold Droid-serif', 0,       cy     - 18);
-  drawText(ctx, 'u',  'gray',  'left',   '28px bold Droid-serif', 0,       cy     - 55);
-  drawText(ctx, 'e',  'gray',  'center', '28px bold Droid-serif', cx - 40, - 6);
+  drawText(ctx, 'T',  'gray',  'left',   '28px bold Droid-serif', 0,       cy     - 55);
+  drawText(ctx, 'E',  'gray',  'center', '28px bold Droid-serif', cx - 40, - 6);
   drawText(ctx, '12', 'white', 'center', '28px bold Droid-serif', cx,      - 6);
   
   // Draw Day
