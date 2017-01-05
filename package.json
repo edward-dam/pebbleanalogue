@@ -18,12 +18,13 @@
         "targetPlatforms": [
             "basalt",
             "chalk",
-            "diorite"
+            "diorite",
+            "emery"
         ],
         "uuid": "0d473ae9-5fae-44a4-8728-148858d3ac28",
         "watchapp": {
             "watchface": true
         }
     },
-    "version": "1.5.0"
+    "version": "1.6.0"
 }
