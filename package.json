@@ -2,12 +2,12 @@
     "author": "Edward Dam",
     "dependencies": {},
     "keywords": [],
-    "name": "analogue-v1.3",
+    "name": "analogue-v1.4",
     "pebble": {
         "capabilities": [
             "location"
         ],
-        "displayName": "Analogue v1.3",
+        "displayName": "Analogue v1.4",
         "enableMultiJS": true,
         "messageKeys": [],
         "projectType": "rocky",
@@ -16,12 +16,13 @@
         },
         "sdkVersion": "3",
         "targetPlatforms": [
-            "basalt"
+            "basalt",
+            "diorite"
         ],
         "uuid": "0d473ae9-5fae-44a4-8728-148858d3ac28",
         "watchapp": {
             "watchface": true
         }
     },
-    "version": "1.3.0"
+    "version": "1.4.0"
 }
