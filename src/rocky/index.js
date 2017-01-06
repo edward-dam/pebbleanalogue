@@ -62,7 +62,7 @@ rocky.on('draw', function(event) {
   drawText(ctx, '7',  'white', 'center', '28px bold Droid-serif', cx - 40, cy + 54);
   drawText(ctx, '8',  'white', 'left',   '28px bold Droid-serif', cx - 72, cy + 20);
   drawText(ctx, '9',  'white', 'left',   '28px bold Droid-serif', cx - 72, cy - 18);
-  drawText(ctx, '0',  'white', 'left',   '28px bold Droid-serif', cx - 72, cy - 55);
+  drawText(ctx, 'X',  'white', 'left',   '28px bold Droid-serif', cx - 72, cy - 55);
   drawText(ctx, 'E',  'white', 'center', '28px bold Droid-serif', cx - 40, cy - 90);
   drawText(ctx, '12', 'white', 'center', '28px bold Droid-serif', cx,      cy - 90);
 
