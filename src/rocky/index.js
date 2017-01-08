@@ -30,9 +30,23 @@ function drawHand(ctx, cx, cy, angle, length, color, linewidth) {
   ctx.stroke();
 }
 
-// Redraw Every Minute
+// Collect API Messages
 
-rocky.on('minutechange', function(event) {
+var interval;
+
+rocky.postMessage({command: 'settings'});
+
+rocky.on('message', function(event) {
+  var message = event.data;
+  if (message.interval) {
+    interval = message.interval;
+    rocky.requestDraw();
+  }
+});
+
+// Redraw Inteval
+
+rocky.on('secondchange', function(event) {
   rocky.requestDraw();
 });
 
@@ -77,6 +91,13 @@ rocky.on('draw', function(event) {
   // Define Max Length of Hands
   var maxLength = (Math.min(mx, my) - 15) / 2;
 
+  // Draw Second Hand
+  if (interval === 'secondchange') {
+    var secondFraction = (new Date().getSeconds()) / 60;
+    var secondAngle    = fractionToRadian(secondFraction);
+    drawHand(ctx, cx, cy, secondAngle, maxLength, 'white', 2);
+  }
+
   // Draw Minute Hand
   var minuteFraction = (new Date().getMinutes()) / 60;
   var minuteAngle    = fractionToRadian(minuteFraction);
@@ -86,7 +107,10 @@ rocky.on('draw', function(event) {
   var hourFraction = (new Date().getHours() % 12 + minuteFraction) / 12;
   var hourAngle    = fractionToRadian(hourFraction);
   drawHand(ctx, cx, cy, hourAngle, maxLength * 0.6, 'gray', 7);
-  
+
   // Draw Centre Dot
   drawHand(ctx, cx, cy, 0, 0, 'white', 13);
+  
+  // Test Settings
+  //drawText(ctx, interval, 'red', 'center', '14px Gothic', cx, cy + 40);
 });
