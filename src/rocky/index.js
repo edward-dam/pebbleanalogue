@@ -44,7 +44,7 @@ rocky.on('message', function(event) {
   }
 });
 
-// Redraw Inteval
+// Redraw Every Second
 
 rocky.on('secondchange', function(event) {
   rocky.requestDraw();
