@@ -5,7 +5,8 @@
     "name": "analogue-v1.5",
     "pebble": {
         "capabilities": [
-            "location"
+            "location",
+            "configurable"
         ],
         "displayName": "Analogue v1.5",
         "enableMultiJS": true,
