@@ -1,8 +1,8 @@
 # pebbleanalogue
 analogue v1.5
 
-![pebbleanalogue.png](http://www.edwarddam.com/images/pebbleanalogue.png)
+![basalt.png](/assets/basalt.png)
 
 banner v1.5
 
-![pebblefacebanner.png](http://www.edwarddam.com/images/pebblefacebanner.png)
+![banner.png](/assets/banner.png)
