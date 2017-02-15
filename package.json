@@ -1,31 +1,47 @@
 {
     "author": "Edward Dam",
-    "dependencies": {},
+    "dependencies": {
+        "pebble-clay": "^1.0.0"
+    },
     "keywords": [],
-    "name": "analogue-v1.5",
+    "name": "analogue-v2.0",
     "pebble": {
         "capabilities": [
-            "location",
             "configurable"
         ],
-        "displayName": "Analogue v1.5",
+        "displayName": "Analogue v2.0",
         "enableMultiJS": true,
-        "messageKeys": [],
-        "projectType": "rocky",
+        "messageKeys": [
+            "HEALTH",
+            "DATE"
+        ],
+        "projectType": "native",
         "resources": {
-            "media": []
+            "media": [
+                {
+                    "file": "images/bt_icon.png",
+                    "name": "BT_ICON",
+                    "targetPlatforms": [
+                        "aplite",
+                        "basalt",
+                        "chalk",
+                        "diorite"
+                    ],
+                    "type": "bitmap"
+                }
+            ]
         },
         "sdkVersion": "3",
         "targetPlatforms": [
+            "aplite",
             "basalt",
             "chalk",
-            "diorite",
-            "emery"
+            "diorite"
         ],
-        "uuid": "0d473ae9-5fae-44a4-8728-148858d3ac28",
+        "uuid": "09885684-2ad4-4f5f-b5fb-f2894aa5ab63",
         "watchapp": {
             "watchface": true
         }
     },
-    "version": "1.51.0"
+    "version": "2.0.0"
 }
