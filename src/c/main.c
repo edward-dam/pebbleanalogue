@@ -73,8 +73,7 @@ static void load_options() {
         }
       } else {
         if (strlen(steps_buffer) != 0) {
-          //text_layer_set_text(health_layer, steps_buffer);
-          text_layer_set_text(health_layer, "20000 st");
+          text_layer_set_text(health_layer, steps_buffer);
         } else {
           text_layer_set_text(health_layer, "steps...");
         }
@@ -174,34 +173,57 @@ static void update_time(Layer *layer, GContext *ctx) {
   int cx = bounds.size.w/2;
   int cy = bounds.size.h/2;
 
-  // set hands colour
-  graphics_context_set_stroke_color(ctx, GColorWhite);
-
   // draw minute hand
-  const int16_t minute_hand_length = PBL_IF_ROUND_ELSE(cx-20,cx);
   int32_t minute_angle = TRIG_MAX_ANGLE * t->tm_min / 60;
+  const int16_t minute_outside_length = PBL_IF_ROUND_ELSE(cx-19,cx-4);
+  const int16_t minute_hand_length = PBL_IF_ROUND_ELSE(cx-20,cx-5);
+  GPoint minute_outside = {
+    .x = (int16_t)(sin_lookup(minute_angle) * (int32_t)minute_outside_length / TRIG_MAX_RATIO) + center.x,
+    .y = (int16_t)(-cos_lookup(minute_angle) * (int32_t)minute_outside_length / TRIG_MAX_RATIO) + center.y,
+  };
   GPoint minute_hand = {
     .x = (int16_t)(sin_lookup(minute_angle) * (int32_t)minute_hand_length / TRIG_MAX_RATIO) + center.x,
     .y = (int16_t)(-cos_lookup(minute_angle) * (int32_t)minute_hand_length / TRIG_MAX_RATIO) + center.y,
   };
-  graphics_context_set_stroke_width(ctx, 5);
+  graphics_context_set_stroke_color(ctx, GColorBlack);
+  graphics_context_set_stroke_width(ctx, 11);
+  graphics_draw_line(ctx, minute_outside, center);
+  graphics_context_set_stroke_color(ctx, GColorWhite);
+  graphics_context_set_stroke_width(ctx, 9);
   graphics_draw_line(ctx, minute_hand, center);
   
   // draw hour hand
-  const int16_t hour_hand_length = PBL_IF_ROUND_ELSE(cx-40,cx-20);
   int32_t hour_angle = TRIG_MAX_ANGLE * (((t->tm_hour % 12) * 6) + (t->tm_min / 10)) / (12 * 6);
+  const int16_t hour_outside_length = PBL_IF_ROUND_ELSE(cx-44,cx-34);
+  const int16_t hour_hand_length = PBL_IF_ROUND_ELSE(cx-45,cx-35);
+  const int16_t hour_inside_length = PBL_IF_ROUND_ELSE(cx-55,cx-45);
+  GPoint hour_outside = {
+    .x = (int16_t)(sin_lookup(hour_angle) * (int32_t)hour_outside_length / TRIG_MAX_RATIO) + center.x,
+    .y = (int16_t)(-cos_lookup(hour_angle) * (int32_t)hour_outside_length / TRIG_MAX_RATIO) + center.y,
+  };
   GPoint hour_hand = {
     .x = (int16_t)(sin_lookup(hour_angle) * (int32_t)hour_hand_length / TRIG_MAX_RATIO) + center.x,
     .y = (int16_t)(-cos_lookup(hour_angle) * (int32_t)hour_hand_length / TRIG_MAX_RATIO) + center.y,
   };
-  graphics_context_set_stroke_width(ctx, 5);
+  GPoint hour_inside = {
+    .x = (int16_t)(sin_lookup(hour_angle) * (int32_t)hour_inside_length / TRIG_MAX_RATIO) + center.x,
+    .y = (int16_t)(-cos_lookup(hour_angle) * (int32_t)hour_inside_length / TRIG_MAX_RATIO) + center.y,
+  };
+  graphics_context_set_stroke_color(ctx, GColorBlack);
+  graphics_context_set_stroke_width(ctx, 11);
+  graphics_draw_line(ctx, hour_outside, center);
+  graphics_context_set_stroke_color(ctx, GColorWhite);
+  graphics_context_set_stroke_width(ctx, 9);
   graphics_draw_line(ctx, hour_hand, center);
+  graphics_context_set_stroke_color(ctx, GColorBlack);
+  graphics_context_set_stroke_width(ctx, 5);
+  graphics_draw_line(ctx, hour_inside, center);
 
   // draw centre
   graphics_context_set_fill_color(ctx, GColorWhite);
-  graphics_fill_circle(ctx, GPoint(cx,cy), 4);
+  graphics_fill_circle(ctx, GPoint(cx,cy), 6);
   graphics_context_set_fill_color(ctx, GColorBlack);
-  graphics_fill_circle(ctx, GPoint(cx,cy), 2);
+  graphics_fill_circle(ctx, GPoint(cx,cy), 3);
 }
 
 // refresh date & time
@@ -220,35 +242,46 @@ static void canvas_update_proc(Layer *layer, GContext *ctx) {
   // set definitions
   graphics_context_set_stroke_width(ctx, 1);
   graphics_context_set_stroke_color(ctx, GColorWhite);
-  graphics_context_set_fill_color(ctx, GColorWhite);
   
   // draw 12
-  graphics_draw_line(ctx, GPoint(cx-8,PBL_IF_ROUND_ELSE(cy-83,cy-82)), GPoint(cx-8,PBL_IF_ROUND_ELSE(cy-64,cy-63)));
-  graphics_draw_line(ctx, GPoint(cx-9,PBL_IF_ROUND_ELSE(cy-83,cy-82)), GPoint(cx-9,PBL_IF_ROUND_ELSE(cy-64,cy-63)));
-
+  graphics_draw_line(ctx, GPoint(cx-7,PBL_IF_ROUND_ELSE(cy-84,cy-82)),  GPoint(cx-7,PBL_IF_ROUND_ELSE(cy-63,cy-61)));
+  graphics_draw_line(ctx, GPoint(cx-8,PBL_IF_ROUND_ELSE(cy-84,cy-82)),  GPoint(cx-8,PBL_IF_ROUND_ELSE(cy-63,cy-61)));
+  graphics_draw_line(ctx, GPoint(cx-9,PBL_IF_ROUND_ELSE(cy-84,cy-82)),  GPoint(cx-9,PBL_IF_ROUND_ELSE(cy-63,cy-61)));
+  graphics_draw_line(ctx, GPoint(cx-10,PBL_IF_ROUND_ELSE(cy-84,cy-82)), GPoint(cx-10,PBL_IF_ROUND_ELSE(cy-63,cy-61)));
+  
   // draw 11
-  graphics_draw_line(ctx, GPoint(cx-41,PBL_IF_ROUND_ELSE(cy-73,cy-82)), GPoint(cx-41,PBL_IF_ROUND_ELSE(cy-54,cy-63)));
-  graphics_draw_line(ctx, GPoint(cx-42,PBL_IF_ROUND_ELSE(cy-73,cy-82)), GPoint(cx-42,PBL_IF_ROUND_ELSE(cy-54,cy-63)));
-  graphics_draw_line(ctx, GPoint(cx-30,PBL_IF_ROUND_ELSE(cy-73,cy-82)), GPoint(cx-30,PBL_IF_ROUND_ELSE(cy-54,cy-63)));
-  graphics_draw_line(ctx, GPoint(cx-31,PBL_IF_ROUND_ELSE(cy-73,cy-82)), GPoint(cx-31,PBL_IF_ROUND_ELSE(cy-54,cy-63)));
+  graphics_draw_line(ctx, GPoint(cx-40,PBL_IF_ROUND_ELSE(cy-76,cy-82)), GPoint(cx-40,PBL_IF_ROUND_ELSE(cy-55,cy-61)));
+  graphics_draw_line(ctx, GPoint(cx-41,PBL_IF_ROUND_ELSE(cy-76,cy-82)), GPoint(cx-41,PBL_IF_ROUND_ELSE(cy-55,cy-61)));
+  graphics_draw_line(ctx, GPoint(cx-42,PBL_IF_ROUND_ELSE(cy-76,cy-82)), GPoint(cx-42,PBL_IF_ROUND_ELSE(cy-55,cy-61)));
+  graphics_draw_line(ctx, GPoint(cx-43,PBL_IF_ROUND_ELSE(cy-76,cy-82)), GPoint(cx-43,PBL_IF_ROUND_ELSE(cy-55,cy-61)));
+  graphics_draw_line(ctx, GPoint(cx-29,PBL_IF_ROUND_ELSE(cy-76,cy-82)), GPoint(cx-29,PBL_IF_ROUND_ELSE(cy-55,cy-61)));
+  graphics_draw_line(ctx, GPoint(cx-30,PBL_IF_ROUND_ELSE(cy-76,cy-82)), GPoint(cx-30,PBL_IF_ROUND_ELSE(cy-55,cy-61)));
+  graphics_draw_line(ctx, GPoint(cx-31,PBL_IF_ROUND_ELSE(cy-76,cy-82)), GPoint(cx-31,PBL_IF_ROUND_ELSE(cy-55,cy-61)));
+  graphics_draw_line(ctx, GPoint(cx-32,PBL_IF_ROUND_ELSE(cy-76,cy-82)), GPoint(cx-32,PBL_IF_ROUND_ELSE(cy-55,cy-61)));
   
   // draw 10
-  graphics_draw_line(ctx, GPoint(PBL_IF_ROUND_ELSE(20,2),PBL_IF_ROUND_ELSE(cy-47,cy-51)), GPoint(PBL_IF_ROUND_ELSE(20,2),PBL_IF_ROUND_ELSE(cy-28,cy-32)));
-  graphics_draw_line(ctx, GPoint(PBL_IF_ROUND_ELSE(21,3),PBL_IF_ROUND_ELSE(cy-47,cy-51)), GPoint(PBL_IF_ROUND_ELSE(21,3),PBL_IF_ROUND_ELSE(cy-28,cy-32)));
-
-  // draw 1
-  graphics_draw_line(ctx, GPoint(cx+36,PBL_IF_ROUND_ELSE(cy-73,cy-82)), GPoint(cx+36,PBL_IF_ROUND_ELSE(cy-54,cy-63)));
-  graphics_draw_line(ctx, GPoint(cx+37,PBL_IF_ROUND_ELSE(cy-73,cy-82)), GPoint(cx+37,PBL_IF_ROUND_ELSE(cy-54,cy-63)));
+  graphics_draw_line(ctx, GPoint(PBL_IF_ROUND_ELSE(17,2),PBL_IF_ROUND_ELSE(cy-46,cy-52)), GPoint(PBL_IF_ROUND_ELSE(17,2),PBL_IF_ROUND_ELSE(cy-25,cy-31)));
+  graphics_draw_line(ctx, GPoint(PBL_IF_ROUND_ELSE(18,3),PBL_IF_ROUND_ELSE(cy-46,cy-52)), GPoint(PBL_IF_ROUND_ELSE(18,3),PBL_IF_ROUND_ELSE(cy-25,cy-31)));
+  graphics_draw_line(ctx, GPoint(PBL_IF_ROUND_ELSE(19,4),PBL_IF_ROUND_ELSE(cy-46,cy-52)), GPoint(PBL_IF_ROUND_ELSE(19,4),PBL_IF_ROUND_ELSE(cy-25,cy-31)));
+  graphics_draw_line(ctx, GPoint(PBL_IF_ROUND_ELSE(20,5),PBL_IF_ROUND_ELSE(cy-46,cy-52)), GPoint(PBL_IF_ROUND_ELSE(20,5),PBL_IF_ROUND_ELSE(cy-25,cy-31)));
   
+  // draw 1
+  graphics_draw_line(ctx, GPoint(cx+35,PBL_IF_ROUND_ELSE(cy-76,cy-82)), GPoint(cx+35,PBL_IF_ROUND_ELSE(cy-55,cy-61)));
+  graphics_draw_line(ctx, GPoint(cx+36,PBL_IF_ROUND_ELSE(cy-76,cy-82)), GPoint(cx+36,PBL_IF_ROUND_ELSE(cy-55,cy-61)));
+  graphics_draw_line(ctx, GPoint(cx+37,PBL_IF_ROUND_ELSE(cy-76,cy-82)), GPoint(cx+37,PBL_IF_ROUND_ELSE(cy-55,cy-61)));
+  graphics_draw_line(ctx, GPoint(cx+38,PBL_IF_ROUND_ELSE(cy-76,cy-82)), GPoint(cx+38,PBL_IF_ROUND_ELSE(cy-55,cy-61)));
+
   // draw guidelines
   //int mx = bounds.size.w;
   //int my = bounds.size.h;
-  //graphics_draw_line(ctx, GPoint(0,cy),    GPoint(mx,cy));
-  //graphics_draw_line(ctx, GPoint(0,cy-42), GPoint(mx,cy-42));
-  //graphics_draw_line(ctx, GPoint(0,cy+42), GPoint(mx,cy+42));
-  //graphics_draw_line(ctx, GPoint(cx,0),    GPoint(cx,my));
+  //graphics_draw_line(ctx, GPoint(0,cy), GPoint(mx,cy));
+  //graphics_draw_line(ctx, GPoint(cx,0), GPoint(cx,my));
   //graphics_draw_line(ctx, GPoint(cx-36,0), GPoint(cx-36,my));
   //graphics_draw_line(ctx, GPoint(cx+36,0), GPoint(cx+36,my));
+  //graphics_draw_line(ctx, GPoint(0,cy-36), GPoint(mx,cy-36));
+  //graphics_draw_line(ctx, GPoint(0,cy+36), GPoint(mx,cy+36));
+  //graphics_draw_line(ctx, GPoint(0,cy-42), GPoint(mx,cy-42));
+  //graphics_draw_line(ctx, GPoint(0,cy+42), GPoint(mx,cy+42));
 }
 
 // window load
@@ -264,23 +297,18 @@ static void main_window_load(Window *window) {
   canvas_layer = layer_create(bounds);
   layer_set_update_proc(canvas_layer, canvas_update_proc);
   layer_add_child(window_layer, canvas_layer);
-
-  // time layer
-  time_layer = layer_create(bounds);
-  layer_set_update_proc(time_layer, update_time);
-  layer_add_child(window_layer, time_layer);
   
   // numbers layers
-  number12_layer = text_layer_create(GRect(+2,PBL_IF_ROUND_ELSE(cy-91,cy-90),mx,my));
-  number6_layer  = text_layer_create(GRect(+0,PBL_IF_ROUND_ELSE(cy+55,cy+54),mx,my));
-  number3_layer  = text_layer_create(GRect(PBL_IF_ROUND_ELSE(-5,0),cy-18,mx,my));
-  number9_layer  = text_layer_create(GRect(PBL_IF_ROUND_ELSE(+5,0),cy-18,mx,my));
-  number5_layer  = text_layer_create(GRect(+36,PBL_IF_ROUND_ELSE(cy+45,cy+54),mx,my));
-  number7_layer  = text_layer_create(GRect(-36,PBL_IF_ROUND_ELSE(cy+45,cy+54),mx,my));
-  number2_layer  = text_layer_create(GRect(PBL_IF_ROUND_ELSE(-18,0),PBL_IF_ROUND_ELSE(cy-55,cy-59),mx,my));
-  number4_layer  = text_layer_create(GRect(PBL_IF_ROUND_ELSE(-18,0),PBL_IF_ROUND_ELSE(cy+20,cy+24),mx,my));
-  number8_layer  = text_layer_create(GRect(PBL_IF_ROUND_ELSE(+18,0),PBL_IF_ROUND_ELSE(cy+20,cy+24),mx,my));
-  number10_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(+22,4),PBL_IF_ROUND_ELSE(cy-55,cy-59),mx,my));
+  number12_layer = text_layer_create(GRect(+4,PBL_IF_ROUND_ELSE(cy-94,cy-92),mx,my));
+  number6_layer  = text_layer_create(GRect(+1,PBL_IF_ROUND_ELSE(cy+52,cy+50),mx,my));
+  number3_layer  = text_layer_create(GRect(PBL_IF_ROUND_ELSE(-4,1),cy-21,mx,my));
+  number9_layer  = text_layer_create(GRect(PBL_IF_ROUND_ELSE(+5,0),cy-21,mx,my));
+  number5_layer  = text_layer_create(GRect(+37,PBL_IF_ROUND_ELSE(cy+42,cy+50),mx,my));
+  number7_layer  = text_layer_create(GRect(-35,PBL_IF_ROUND_ELSE(cy+42,cy+50),mx,my));
+  number2_layer  = text_layer_create(GRect(PBL_IF_ROUND_ELSE(-15,1),PBL_IF_ROUND_ELSE(cy-56,cy-62),mx,my));
+  number10_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(+21,6),PBL_IF_ROUND_ELSE(cy-56,cy-62),mx,my));
+  number4_layer  = text_layer_create(GRect(PBL_IF_ROUND_ELSE(-15,1),PBL_IF_ROUND_ELSE(cy+15,cy+21),mx,my));
+  number8_layer  = text_layer_create(GRect(PBL_IF_ROUND_ELSE(+16,0),PBL_IF_ROUND_ELSE(cy+15,cy+21),mx,my));
   text_layer_set_background_color(number2_layer,  GColorClear);
   text_layer_set_background_color(number3_layer,  GColorClear);
   text_layer_set_background_color(number4_layer,  GColorClear);
@@ -311,16 +339,16 @@ static void main_window_load(Window *window) {
   text_layer_set_text_alignment(number9_layer,  GTextAlignmentLeft);
   text_layer_set_text_alignment(number10_layer, GTextAlignmentLeft);
   text_layer_set_text_alignment(number12_layer, GTextAlignmentCenter);
-  text_layer_set_font(number2_layer,  fonts_get_system_font(FONT_KEY_LECO_28_LIGHT_NUMBERS));
-  text_layer_set_font(number3_layer,  fonts_get_system_font(FONT_KEY_LECO_28_LIGHT_NUMBERS));
-  text_layer_set_font(number4_layer,  fonts_get_system_font(FONT_KEY_LECO_28_LIGHT_NUMBERS));
-  text_layer_set_font(number5_layer,  fonts_get_system_font(FONT_KEY_LECO_28_LIGHT_NUMBERS));
-  text_layer_set_font(number6_layer,  fonts_get_system_font(FONT_KEY_LECO_28_LIGHT_NUMBERS));
-  text_layer_set_font(number7_layer,  fonts_get_system_font(FONT_KEY_LECO_28_LIGHT_NUMBERS));
-  text_layer_set_font(number8_layer,  fonts_get_system_font(FONT_KEY_LECO_28_LIGHT_NUMBERS));
-  text_layer_set_font(number9_layer,  fonts_get_system_font(FONT_KEY_LECO_28_LIGHT_NUMBERS));
-  text_layer_set_font(number10_layer, fonts_get_system_font(FONT_KEY_LECO_28_LIGHT_NUMBERS));
-  text_layer_set_font(number12_layer, fonts_get_system_font(FONT_KEY_LECO_28_LIGHT_NUMBERS));
+  text_layer_set_font(number2_layer,  fonts_get_system_font(FONT_KEY_LECO_32_BOLD_NUMBERS));
+  text_layer_set_font(number3_layer,  fonts_get_system_font(FONT_KEY_LECO_32_BOLD_NUMBERS));
+  text_layer_set_font(number4_layer,  fonts_get_system_font(FONT_KEY_LECO_32_BOLD_NUMBERS));
+  text_layer_set_font(number5_layer,  fonts_get_system_font(FONT_KEY_LECO_32_BOLD_NUMBERS));
+  text_layer_set_font(number6_layer,  fonts_get_system_font(FONT_KEY_LECO_32_BOLD_NUMBERS));
+  text_layer_set_font(number7_layer,  fonts_get_system_font(FONT_KEY_LECO_32_BOLD_NUMBERS));
+  text_layer_set_font(number8_layer,  fonts_get_system_font(FONT_KEY_LECO_32_BOLD_NUMBERS));
+  text_layer_set_font(number9_layer,  fonts_get_system_font(FONT_KEY_LECO_32_BOLD_NUMBERS));
+  text_layer_set_font(number10_layer, fonts_get_system_font(FONT_KEY_LECO_32_BOLD_NUMBERS));
+  text_layer_set_font(number12_layer, fonts_get_system_font(FONT_KEY_LECO_32_BOLD_NUMBERS));
   text_layer_set_text(number2_layer,  "2");
   text_layer_set_text(number3_layer,  "3");
   text_layer_set_text(number4_layer,  "4");
@@ -343,32 +371,32 @@ static void main_window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(number12_layer));
 
   // date layers
-  day_layer  = text_layer_create(GRect(PBL_IF_ROUND_ELSE(50,40),cy-16,mx,my));
-  date_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(50,40),cy-4, mx,my));
+  day_layer  = text_layer_create(GRect(PBL_IF_ROUND_ELSE(48,38),cy-15,mx,my));
+  date_layer = text_layer_create(GRect(PBL_IF_ROUND_ELSE(48,38),cy-3, mx,my));
   text_layer_set_background_color(day_layer, GColorClear);
   text_layer_set_background_color(date_layer, GColorClear);
   text_layer_set_text_color(day_layer, GColorWhite);
   text_layer_set_text_color(date_layer, GColorWhite);
   text_layer_set_text_alignment(day_layer, GTextAlignmentCenter);
   text_layer_set_text_alignment(date_layer, GTextAlignmentCenter);
-  text_layer_set_font(day_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14));
-  text_layer_set_font(date_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14));
+  text_layer_set_font(day_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD));
+  text_layer_set_font(date_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD));
   layer_add_child(window_layer, text_layer_get_layer(day_layer));
   layer_add_child(window_layer, text_layer_get_layer(date_layer));
    
   // bluetooth layer
   bt_icon_bitmap = gbitmap_create_with_resource(RESOURCE_ID_BT_ICON);
-  bt_icon_layer = bitmap_layer_create(GRect(0,PBL_IF_ROUND_ELSE(-32,-34),mx,my));
+  bt_icon_layer = bitmap_layer_create(GRect(0,-34,mx,my));
   bitmap_layer_set_bitmap(bt_icon_layer, bt_icon_bitmap);
   layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(bt_icon_layer));
   bluetooth_callback(connection_service_peek_pebble_app_connection());
 
   // health layer
-  health_layer = text_layer_create(GRect(0,PBL_IF_ROUND_ELSE(cy+28,cy+32),mx,my));
+  health_layer = text_layer_create(GRect(0,PBL_IF_ROUND_ELSE(cy+27,cy+33),mx,my));
   text_layer_set_background_color(health_layer, GColorClear);
   text_layer_set_text_color(health_layer, GColorWhite);
   text_layer_set_text_alignment(health_layer, GTextAlignmentCenter);
-  text_layer_set_font(health_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14));
+  text_layer_set_font(health_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD));
   layer_add_child(window_layer, text_layer_get_layer(health_layer));
   #if defined(PBL_HEALTH)
     if(health_service_events_subscribe(health_handler, NULL)) {
@@ -380,6 +408,11 @@ static void main_window_load(Window *window) {
       }
     }
   #endif
+  
+  // time layer
+  time_layer = layer_create(bounds);
+  layer_set_update_proc(time_layer, update_time);
+  layer_add_child(window_layer, time_layer);
 }
 
 // window unload

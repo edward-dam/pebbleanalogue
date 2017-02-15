@@ -19,6 +19,18 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/menu_icon.png",
+                    "menuIcon": true,
+                    "name": "MENU_ICON",
+                    "targetPlatforms": [
+                        "aplite",
+                        "basalt",
+                        "chalk",
+                        "diorite"
+                    ],
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/bt_icon.png",
                     "name": "BT_ICON",
                     "targetPlatforms": [
