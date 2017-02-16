@@ -388,7 +388,7 @@ static void main_window_load(Window *window) {
   bt_icon_bitmap = gbitmap_create_with_resource(RESOURCE_ID_BT_ICON);
   bt_icon_layer = bitmap_layer_create(GRect(0,-34,mx,my));
   bitmap_layer_set_bitmap(bt_icon_layer, bt_icon_bitmap);
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(bt_icon_layer));
+  layer_add_child(window_layer, bitmap_layer_get_layer(bt_icon_layer));
   bluetooth_callback(connection_service_peek_pebble_app_connection());
 
   // health layer
