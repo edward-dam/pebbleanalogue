@@ -1,7 +1,7 @@
 //Author: Ed Dam
 
 module.exports = [
-  { "type": "heading", "defaultValue": "Analogue v2.0" },
+  { "type": "heading", "defaultValue": "Analogue v2.1" },
   { "type": "text", "defaultValue": "by Edward Dam" },
   { "type": "section", "items": [
     { "type": "heading", "defaultValue": "Date" },
@@ -15,6 +15,14 @@ module.exports = [
     { "type": "heading", "defaultValue": "Health" },
     { "type": "text", "defaultValue": "Steps & Sleep" },
     { "type": "radiogroup", "messageKey": "HEALTH", "options": [
+      { "label": "Disable", "value": "false" },
+      { "label": "Enable", "value": "true" } ],
+    "defaultValue": "false" } ]
+  },
+  { "type": "section", "items": [
+    { "type": "heading", "defaultValue": "Battery" },
+    { "type": "text", "defaultValue": "Please Enable or Disable" },
+    { "type": "radiogroup", "messageKey": "BATTERY", "options": [
       { "label": "Disable", "value": "false" },
       { "label": "Enable", "value": "true" } ],
     "defaultValue": "false" } ]

@@ -25,20 +25,27 @@ static BitmapLayer *bt_icon_layer;
 static GBitmap *bt_icon_bitmap;
 bool bt_startup = true;
 
+// battery level
+static int battery_level;
+static TextLayer *battery_layer;
+
 // health events
 static char steps_buffer[9];
 static char sleep_buffer[11];
 bool sleep_bool;
 
 // saved settings
-uint32_t dates_setting  = 0;
-uint32_t health_setting = 1;
+uint32_t dates_setting   = 0;
+uint32_t health_setting  = 1;
+uint32_t battery_setting = 2;
 bool dates_bool;
 bool health_bool;
+bool battery_bool;
 
-// load date
+// load date/battery
 static char day_buffer[4];
 static char date_buffer[3];
+static char battery_buffer[5];
 
 // load options
 static void load_options() {
@@ -85,18 +92,36 @@ static void load_options() {
   } else {
     health_bool = false;
   }
+  
+  // load battery
+  if (persist_exists(battery_setting)) {
+    char batteries_buffer[5];
+    persist_read_string(battery_setting, batteries_buffer, sizeof(batteries_buffer));
+    if (strcmp(batteries_buffer, "true") == 0) {
+      battery_bool = true;
+      text_layer_set_text(battery_layer, battery_buffer);
+    } else {
+      battery_bool = false;
+      text_layer_set_text(battery_layer, "");
+    }
+  } else {
+    battery_bool = false;
+  }
 }
 
 // update options
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   // collect options
-  Tuple *date_tuple   = dict_find(iterator, MESSAGE_KEY_DATE);
-  Tuple *health_tuple = dict_find(iterator, MESSAGE_KEY_HEALTH);
+  Tuple *date_tuple    = dict_find(iterator, MESSAGE_KEY_DATE);
+  Tuple *health_tuple  = dict_find(iterator, MESSAGE_KEY_HEALTH);
+  Tuple *battery_tuple = dict_find(iterator, MESSAGE_KEY_BATTERY);
 
   // save options
-  if (date_tuple) {
+  if (date_tuple && battery_tuple) {
     char *dates_string = date_tuple->value->cstring;
+    char *battery_string = battery_tuple->value->cstring;
     persist_write_string(dates_setting, dates_string);
+    persist_write_string(battery_setting, battery_string);
     if (health_tuple) {
       char *health_string = health_tuple->value->cstring;
       persist_write_string(health_setting, health_string);
@@ -133,6 +158,20 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     }
   }
 #endif
+
+// battery level change
+static void battery_callback(BatteryChargeState state) {
+  // collect battery level
+  battery_level = state.charge_percent;
+  snprintf(battery_buffer, sizeof(battery_buffer), "%d%%", (int8_t)battery_level);
+  
+  // display battery percentage
+  if (!battery_bool) {
+    text_layer_set_text(battery_layer, "");
+  } else {
+    text_layer_set_text(battery_layer, battery_buffer);
+  }
+}
 
 // bluetooth connection change
 static void bluetooth_callback(bool connected) {
@@ -383,7 +422,16 @@ static void main_window_load(Window *window) {
   text_layer_set_font(date_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD));
   layer_add_child(window_layer, text_layer_get_layer(day_layer));
   layer_add_child(window_layer, text_layer_get_layer(date_layer));
-   
+  
+  // battery layer
+  battery_layer = text_layer_create(GRect(0,cy-45,mx,my));
+  text_layer_set_background_color(battery_layer, GColorClear);
+  text_layer_set_text_color(battery_layer, GColorWhite);
+  text_layer_set_text_alignment(battery_layer, GTextAlignmentCenter);
+  text_layer_set_font(battery_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD));
+  layer_add_child(window_layer, text_layer_get_layer(battery_layer));
+  battery_callback(battery_state_service_peek());
+
   // bluetooth layer
   bt_icon_bitmap = gbitmap_create_with_resource(RESOURCE_ID_BT_ICON);
   bt_icon_layer = bitmap_layer_create(GRect(0,-34,mx,my));
@@ -426,6 +474,7 @@ static void main_window_unload(Window *window) {
   gbitmap_destroy(bt_icon_bitmap);
   // destroy text layers
   text_layer_destroy(health_layer);
+  text_layer_destroy(battery_layer);
   text_layer_destroy(date_layer);
   text_layer_destroy(day_layer);
   text_layer_destroy(number12_layer);
@@ -457,9 +506,12 @@ static void init() {
   
   // send window to screen
   window_stack_push(main_window, true);
-  
+
   // load options
   load_options();
+  
+  // update battery level
+  battery_state_service_subscribe(battery_callback);
 
   // update date
   update_date();
@@ -481,6 +533,7 @@ static void init() {
 static void deinit() {
   // unsubscribe from events
   connection_service_unsubscribe();
+  battery_state_service_unsubscribe();
   tick_timer_service_unsubscribe();
   // destroy window
   window_destroy(main_window);
